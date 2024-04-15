@@ -1,5 +1,7 @@
 # Simple Thread Manager
 
+Please Note this is under development, documentiation needs to be updated!!!
+
 This project implements a simple thread manager in C++. It provides functionality to manage and execute processes concurrently across multiple threads.
 
 ## Features
