@@ -1,10 +1,17 @@
+// *******************************************************
+// ProcessControl.cpp
+// *******************************************************
 //
-// Created by Bradley Crouch on 15/04/2024.
+// Author: Bradley Crouch
+// Copyright: © 2024 - April - 17
 //
-
+// Created by Bradley Crouch on 01/04/2024.
+//
 
 
 #include "../include/ProcessControl.hpp"
+#include <stdexcept>
+
 namespace SimpleThreadManager {
 
     void ProcessControl::AddProcess(std::string id, std::shared_ptr<IProcess> process,
@@ -31,7 +38,7 @@ namespace SimpleThreadManager {
         m_processes.emplace(id, ProcessItem(id, process, dependencies, priorityLevel));
     }
 
-    bool ProcessControl::CheckDependiences() {
+    bool ProcessControl::CheckDependencies() {
         std::map<std::string, ProcessItem> processMap;
         std::set<std::string> completedSet;
 
@@ -52,10 +59,10 @@ namespace SimpleThreadManager {
 
             for (auto &item: processMap) {
                 std::string id = item.second.Id();
-                auto dependancies = item.second.Dependancies();
+                auto dependencies = item.second.Dependencies();
                 bool completed = true;
 
-                for (auto item: dependancies) {
+                for (auto item: dependencies) {
                     if (!completedSet.contains(item)) {
                         completed = false;
                         break;
@@ -76,21 +83,24 @@ namespace SimpleThreadManager {
         } while (finished > 0);
 
 
-        return processMap.size() == 0;
+        return processMap.empty();
 
     }
 
     void ProcessControl::Run(std::shared_ptr<IData> data) {
+        if(!CheckDependencies())
+        {
+            throw  std::invalid_argument("Invalid processing queue, deadlock detected");
+        }
 
         try {
-
             std::vector<ProcessItem> processList;
 
             // convert and copy process map to a list, allows rerun .. Take copy of list
             {
                 std::lock_guard<std::mutex> lock(m_mutex);
 
-                for (auto item: m_processes) {
+                for (const auto& item: m_processes) {
                     processList.push_back(item.second);
                 }
             }
@@ -132,7 +142,7 @@ namespace SimpleThreadManager {
 
                     auto id = processItem.Id();
                     auto process = processItem.Process();
-                    auto dependancies = processItem.Dependancies();
+                    auto dependancies = processItem.Dependencies();
 
                     // wait till all dependancies are run
                     for (auto item: dependancies) {

@@ -1,3 +1,14 @@
+// *******************************************************
+// ProcessControl.cpp
+// *******************************************************
+//
+// Author: Bradley Crouch
+// Copyright: © 2024 - April - 17
+//
+// Created by Bradley Crouch on 01/04/2024.
+//
+
+
 #ifndef SIMPEQUEUE_SIMPLETHREADMANAGER_HPP
 #define SIMPEQUEUE_SIMPLETHREADMANAGER_HPP
 
@@ -56,7 +67,7 @@ namespace SimpleThreadManager {
         void AddProcess(std::string id, std::function<void(std::shared_ptr<IData>)> function,
                         std::initializer_list<std::string> dependencies = {}, long priorityLevel = DEFAULT_PRIORITY);
 
-        bool CheckDependiences();
+        bool CheckDependencies();
 
         void Run(std::shared_ptr<IData> data = nullptr);
     };

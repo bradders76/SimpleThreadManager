@@ -1,8 +1,16 @@
+// *******************************************************
+// TestThreadManager.cpp
+// *******************************************************
 //
-// Created by Bradley Crouch on 15/04/2024.
+// Author: Bradley Crouch
+// Copyright: © 2024 - April - 17
+//
+// Created by Bradley Crouch on 01/04/2024.
 //
 
 #include <memory>
+
+
 #include "../include/ProcessControl.hpp"
 
 class Data : public SimpleThreadManager::IData {
@@ -49,7 +57,7 @@ class ProcessTest : public SimpleThreadManager::IProcess {
 
             return true;
         }
-    };
+};
 
 
 int main(int argc, const char *argv[]) {
@@ -85,7 +93,7 @@ int main(int argc, const char *argv[]) {
     control.AddProcess("D3", process6, {"C", "A"}, 1);
     control.AddProcess("D4", process7, {"C", "A"}, 1);
 
-    std::cout << control.CheckDependiences() << std::endl;
+    std::cout << control.CheckDependencies() << std::endl;
 
     try {
         control.Run(data);
