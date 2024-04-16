@@ -5,10 +5,11 @@
 #ifndef SIMPLETHREADMANAGER_IDATA_H
 #define SIMPLETHREADMANAGER_IDATA_H
 
-class IData
+namespace SimpleThreadManager
 {
+    class IData {
     public:
         virtual ~IData() {} // Virtual destructor
-};
-
+    };
+}
 #endif //SIMPLETHREADMANAGER_IDATA_H

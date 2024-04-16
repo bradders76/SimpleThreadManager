@@ -6,13 +6,15 @@
 #define SIMPLETHREADMANAGER_IPROCESS_HPP
 
 #include "IData.hpp"
-
-class IProcess
+namespace SimpleThreadManager
 {
-public:
-    virtual bool Run(std::shared_ptr<IData> data = nullptr) = 0;
-    virtual ~IProcess() {};
-};
+    class IProcess
+    {
+    public:
+        virtual bool Run(std::shared_ptr<IData> data = nullptr) = 0;
+        virtual ~IProcess() {};
+    };
+}
 
 
 #endif //SIMPLETHREADMANAGER_IPROCESS_HPP

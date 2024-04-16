@@ -27,37 +27,38 @@
 
 using namespace std::chrono_literals;
 
-const ushort DEFAULT_THREADS    = 8;
-const ushort DEFAULT_PRIORITY   = 1000;
+
+namespace SimpleThreadManager {
+    const ushort DEFAULT_THREADS = 8;
+    const ushort DEFAULT_PRIORITY = 1000;
 
 
-class ProcessControl
-{
-private:
-    std::map<std::string, ProcessItem>  m_processes;
+    class ProcessControl {
+    private:
+        std::map<std::string, ProcessItem> m_processes;
 
-    std::mutex                          m_mutex;
+        std::mutex m_mutex;
 
-    ushort                              m_maxThreads;  // not yet used
+        ushort m_maxThreads;  // not yet used
 
-public:
+    public:
 
-    ProcessControl(ushort maxThreads  = DEFAULT_THREADS){
-        if(maxThreads ==  0) maxThreads = 1;
-        m_maxThreads = maxThreads;
+        ProcessControl(ushort maxThreads = DEFAULT_THREADS) {
+            if (maxThreads == 0) maxThreads = 1;
+            m_maxThreads = maxThreads;
 
-    }
+        }
 
-    void AddProcess(std::string id, std::shared_ptr<IProcess> process,
-                    std::initializer_list<std::string> dependencies = {} , long priorityLevel  =  DEFAULT_PRIORITY);
+        void AddProcess(std::string id, std::shared_ptr<IProcess> process,
+                        std::initializer_list<std::string> dependencies = {}, long priorityLevel = DEFAULT_PRIORITY);
 
 
-    void AddProcess(std::string id, std::function<void(std::shared_ptr<IData>)> function,
-                    std::initializer_list<std::string> dependencies = {} , long priorityLevel  =  DEFAULT_PRIORITY);
+        void AddProcess(std::string id, std::function<void(std::shared_ptr<IData>)> function,
+                        std::initializer_list<std::string> dependencies = {}, long priorityLevel = DEFAULT_PRIORITY);
 
-    bool CheckDependiences();
+        bool CheckDependiences();
 
-    void Run(std::shared_ptr<IData> data = nullptr);
-};
-
+        void Run(std::shared_ptr<IData> data = nullptr);
+    };
+}
 #endif //SIMPEQUEUE_SIMPLETHREADMANAGER_HPP
